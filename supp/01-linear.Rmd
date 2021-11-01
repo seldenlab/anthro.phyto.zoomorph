@@ -17,11 +17,9 @@ library(wesanderson)
 library(ggExtra)
 ```
 
-## Set working directory, load data, and define variables
+## Load data + define variables
 
 ```{r setwd ld define variables 3, echo=TRUE}
-# set working directory
-setwd(getwd())
 data <- read.csv("potmeas.csv", header = TRUE, as.is = TRUE)
 
 # define variables
