@@ -24,7 +24,7 @@
 <meta name="author" content="R. Alan Covey, Robert Z. Selden Jr., Nicole Payntar, and Astrid Runggaldier" />
 
 
-<meta name="date" content="2021-09-21" />
+<meta name="date" content="2021-11-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -120,6 +120,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -148,7 +170,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1" data-path="linear-chimú-vessel-metrics.html"><a href="linear-chimú-vessel-metrics.html"><i class="fa fa-check"></i><b>1</b> Linear Chimú vessel metrics</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="linear-chimú-vessel-metrics.html"><a href="linear-chimú-vessel-metrics.html#set-working-directory-load-data-and-define-variables"><i class="fa fa-check"></i><b>1.1</b> Set working directory, load data, and define variables</a></li>
+<li class="chapter" data-level="1.1" data-path="linear-chimú-vessel-metrics.html"><a href="linear-chimú-vessel-metrics.html#load-data-define-variables"><i class="fa fa-check"></i><b>1.1</b> Load data + define variables</a></li>
 <li class="chapter" data-level="1.2" data-path="linear-chimú-vessel-metrics.html"><a href="linear-chimú-vessel-metrics.html#boxplots-for-variable-by-group"><i class="fa fa-check"></i><b>1.2</b> Boxplots for <em>variable</em> by <em>group</em></a></li>
 <li class="chapter" data-level="1.3" data-path="linear-chimú-vessel-metrics.html"><a href="linear-chimú-vessel-metrics.html#principal-components-analysis-for-group"><i class="fa fa-check"></i><b>1.3</b> Principal Components Analysis for <em>group</em></a></li>
 <li class="chapter" data-level="1.4" data-path="linear-chimú-vessel-metrics.html"><a href="linear-chimú-vessel-metrics.html#density-plots-for-variable-group"><i class="fa fa-check"></i><b>1.4</b> Density plots for <em>variable</em> ~ <em>group</em></a>
@@ -169,8 +191,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="landmarking-protocol.html"><a href="landmarking-protocol.html"><i class="fa fa-check"></i><b>2</b> Landmarking protocol</a></li>
-<li class="chapter" data-level="3" data-path="application-of-lasec.html"><a href="application-of-lasec.html"><i class="fa fa-check"></i><b>3</b> Application of <code>LaSEC</code></a></li>
-<li class="chapter" data-level="4" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html"><i class="fa fa-check"></i><b>4</b> Geometric morphometrics</a></li>
+<li class="chapter" data-level="3" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html"><i class="fa fa-check"></i><b>3</b> Geometric morphometrics</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#load-packages-data"><i class="fa fa-check"></i><b>3.1</b> Load packages + data</a></li>
+<li class="chapter" data-level="3.2" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#generalised-procrustes-analysis"><i class="fa fa-check"></i><b>3.2</b> Generalised Procrustes Analysis</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#boxplot"><i class="fa fa-check"></i><b>3.2.1</b> Boxplot</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#principal-components-analysis"><i class="fa fa-check"></i><b>3.3</b> Principal Components Analysis</a></li>
+<li class="chapter" data-level="3.4" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#define-models"><i class="fa fa-check"></i><b>3.4</b> Define models</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#size-and-shape"><i class="fa fa-check"></i><b>3.4.1</b> Size and shape</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#test-hypothesis"><i class="fa fa-check"></i><b>3.5</b> Test Hypothesis</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#procrustes-anova"><i class="fa fa-check"></i><b>3.5.1</b> Procrustes ANOVA</a></li>
+<li class="chapter" data-level="3.5.2" data-path="geometric-morphometrics.html"><a href="geometric-morphometrics.html#mean-shapes"><i class="fa fa-check"></i><b>3.5.2</b> Mean Shapes</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>

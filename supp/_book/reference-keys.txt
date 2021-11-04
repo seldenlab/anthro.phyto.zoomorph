@@ -25,3 +25,15 @@ geometric-morphometrics
 fig:boxsite
 fig:pca
 primary-findings
+tab:gpa
+fig:box1
+load-data-define-variables
+load-packages-data
+generalised-procrustes-analysis
+boxplot
+principal-components-analysis
+define-models
+size-and-shape
+test-hypothesis
+procrustes-anova
+mean-shapes

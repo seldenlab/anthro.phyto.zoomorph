@@ -129,7 +129,7 @@ fit.shape <- procD.lm(shape ~ group,
 
 ## Test Hypothesis
 
-_Hypothesis: Formative/Early and Late/Historic Caddo bottles found north and south of the shape boundary express unique patterns of shape change._
+_Hypothesis: ..._
 
 ### Procrustes ANOVA
 
