@@ -37,3 +37,5 @@ size-and-shape
 test-hypothesis
 procrustes-anova
 mean-shapes
+fig:box1-1
+fig:box1-2

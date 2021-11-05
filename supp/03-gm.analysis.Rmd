@@ -65,6 +65,7 @@ knitr::kable(qdata,
 # attributes for boxplot
 csz <- qdata$csz
 group <-  qdata$group
+type <- qdata$type
 
 # boxplot of vessel centroid size by group
 csz.group <- ggplot(qdata, aes(x = group, y = csz, color = group)) + 
@@ -76,6 +77,17 @@ csz.group <- ggplot(qdata, aes(x = group, y = csz, color = group)) +
 
 # render plot
 csz.group
+
+# boxplot of vessel centroid size by type
+csz.type <- ggplot(qdata, aes(x = type, y = csz, color = type)) + 
+  geom_boxplot(notch = FALSE) +
+  geom_dotplot(binaxis = 'y', stackdir = 'center', dotsize = 0.3) +
+  scale_colour_manual(values = wes_palette("Moonrise2")) +
+  theme(legend.position = "none") +
+  labs(x = 'Group', y = 'Centroid Size')
+
+# render plot
+csz.type
 ```
 
 ## Principal Components Analysis
@@ -87,7 +99,7 @@ Principal components analysis [@RN1746] was used to visualise shape variation am
 pca<-gm.prcomp(Y.gpa$coords)
 summary(pca)
 
-# set plot parameters
+# set plot parameters (groups)
 pch.gps <- c(15:17)[as.factor(group)]
 col.gps <- wes_palette("Moonrise2")[as.factor(group)]
 col.hull <- c("#C27D38","#CCC591","#798E87")
@@ -100,6 +112,20 @@ pc.plot <- plot(pca,
                     shapeHulls(pc.plot, 
                              groups = group,
                              group.cols = col.hull)
+                    
+# set plot parameters (types)
+pch.gps.type <- c(15,17)[as.factor(type)]
+col.gps.type <- wes_palette("Moonrise2")[as.factor(type)]
+col.hull.type <- c("#798E87","#C27D38")
+
+# plot pca by comb
+pc.plot.type <- plot(pca, 
+                 asp = 1,
+                 pch = pch.gps.type,
+                 col = col.gps.type)
+                    shapeHulls(pc.plot.type, 
+                             groups = type,
+                             group.cols = col.hull.type)
 ```
 
 ```{r pca.warp, out.width = "100%", dpi = 300, echo=TRUE, warning=FALSE, fig.cap="Results of PCA summarising shape variation in the aggregated sample; gray, north-formative/early; orange, north-late/historic; brown, south-formative/early; and black, south-late/historic; with mean shapes (gray) contrasted with max/min shapes (black)."}
@@ -125,6 +151,18 @@ fit.shape <- procD.lm(shape ~ group,
                 data = gdf,
                 print.progress = FALSE,
                 iter = 9999)
+
+# size as a function of type?
+fit.size.type <- procD.lm(size ~ type,
+                data = gdf,
+                print.progress = FALSE,
+                iter = 9999)
+
+# shape as a function of type?
+fit.shape.type <- procD.lm(shape ~ type,
+                data = gdf,
+                print.progress = FALSE,
+                iter = 9999)
 ```
 
 ## Test Hypothesis
@@ -139,12 +177,36 @@ anova(fit.size)
 
 # ANOVA: do group shapes differ?
 anova(fit.shape)
+
+# ANOVA: do type sizes differ?
+anova(fit.size.type)
+
+# ANOVA: do type shapes differ?
+anova(fit.shape.type)
 ```
 
 ### Mean Shapes
 
 ```{r mshape.h1, out.width = "100%", dpi = 300, echo=TRUE, warning=FALSE}
 # subset landmark coordinates to produce mean shapes
+new.coords<-coords.subset(A = Y.gpa$coords,
+                          group = qdata$type)
+names(new.coords)
+
+# group shape means
+mean <- lapply(new.coords, mshape)
+
+# plot mean shapes (type)
+plot(mean$bottle)
+plot(mean$jar)
+
+# comparison plots
+plotRefToTarget(mean$bottle, 
+                mean$jar, 
+                method = c("points"),
+                mag = 1)
+
+# subset landmark coordinates to produce mean shapes (group)
 new.coords<-coords.subset(A = Y.gpa$coords,
                           group = qdata$group)
 names(new.coords)
