@@ -2,10 +2,10 @@
 
 ```{r load packages 3, echo=TRUE}
 # install required analysis packages
-#devtools::install_github("tidyverse/tidyverse")
-#devtools::install_github("mlcollyer/RRPP")
-#devtools::install_github("kassambara/ggpubr")
-#devtools::install_github('sinhrks/ggfortify')
+devtools::install_github("tidyverse/tidyverse")
+devtools::install_github("mlcollyer/RRPP")
+devtools::install_github("kassambara/ggpubr")
+devtools::install_github('sinhrks/ggfortify')
 # load libraries
 library(here)
 library(tidyverse)
@@ -25,11 +25,11 @@ data <- read.csv("potmeas.csv", header = TRUE, as.is = TRUE)
 # define variables
 od <- data$orifice.diameter # orifice diameter
 bd <- data$base.diameter # base diameter
-nd <- data$neck.diameter # neck diameter
-bl <- data$belly.diameter # belly diameter
+nd <- data$bneck.diameter # neck diameter
+bl <- data$wide.diameter # belly diameter
 h <- data$height # height
 rt <- data$rim.thickness # rim thickness
-gp <- data$group # anthropomorph, phytomorph, or zoomorph
+gp <- data$form # bottle or jar
 ```
 
 ## Boxplots for _variable_ by _group_
@@ -40,7 +40,7 @@ odgroup <- ggplot(data, aes(x = gp, y = od, color = gp)) +
   geom_boxplot() +
   geom_dotplot(binaxis = 'y',stackdir = 'center',dotsize = 0.3) +
   scale_colour_manual(values = wes_palette("Moonrise2")) +
-  labs(x = "Group", y = "Orifice Diam") +
+  labs(x = "Form", y = "Orifice Diam") +
   theme(legend.position = "none")
 
 # boxplot of base diameter ~ group
@@ -48,7 +48,7 @@ bdgroup <- ggplot(data, aes(x = gp, y = bd, color = gp)) +
   geom_boxplot() +
   geom_dotplot(binaxis = 'y',stackdir = 'center',dotsize = 0.3) +
   scale_colour_manual(values = wes_palette("Moonrise2")) +
-  labs(x = "Group", y = "Base Diam") +
+  labs(x = "Form", y = "Base Diam") +
   theme(legend.position = "none")
 
 # boxplot of neck diameter ~ group
@@ -56,7 +56,7 @@ ndgroup <- ggplot(data, aes(x = gp, y = nd, color = gp)) +
   geom_boxplot() +
   geom_dotplot(binaxis = 'y',stackdir = 'center',dotsize = 0.3) +
   scale_colour_manual(values = wes_palette("Moonrise2")) +
-  labs(x = "Group", y = "Neck Diam") +  
+  labs(x = "Form", y = "Neck Diam") +  
   theme(legend.position = "none")
 
 # boxplot of belly diameter ~ group
@@ -64,7 +64,7 @@ blgroup <- ggplot(data, aes(x = gp, y = bl, color = gp)) +
   geom_boxplot() +
   geom_dotplot(binaxis = 'y',stackdir = 'center',dotsize = 0.3) +
   scale_colour_manual(values = wes_palette("Moonrise2")) +
-  labs(x = "Group", y = "Belly Diam") +  
+  labs(x = "Form", y = "Belly Diam") +  
   theme(legend.position = "none")
 
 # boxplot of height ~ group
@@ -72,7 +72,7 @@ hgroup <- ggplot(data, aes(x = gp, y = h, color = gp)) +
   geom_boxplot() +
   geom_dotplot(binaxis = 'y',stackdir = 'center',dotsize = 0.3) +
   scale_colour_manual(values = wes_palette("Moonrise2")) +
-  labs(x = "Group", y = "Height") +  
+  labs(x = "Form", y = "Height") +  
   theme(legend.position = "none")
 
 # boxplot of rim thickness ~ group
@@ -80,7 +80,7 @@ rtgroup <- ggplot(data, aes(x = gp, y = rt, color = gp)) +
   geom_boxplot() +
   geom_dotplot(binaxis = 'y',stackdir = 'center',dotsize = 0.3) +
   scale_colour_manual(values = wes_palette("Moonrise2")) +
-  labs(x = "Group", y = "Rim Thick") +  
+  labs(x = "Form", y = "Rim Thick") +  
   theme(legend.position = "none")
 
 # render figure
@@ -94,8 +94,8 @@ sitefigure
 
 ```{r pca, out.width = "100%", dpi = 300, echo=TRUE, warning=FALSE, fig.cap="Results of Principal Components Analysis for linear metrics associated with the Chimu vessels used in this study (gray squares, anthropomorphic; orange triangles, phytomorphic; tan circles, zoomorphic)."}
 # set plot parameters to plot by group
-df <- data[c(2:7)]
-pch.gps.gp <- c(15,17,19)[as.factor(gp)]
+df <- data[c(3:8)]
+pch.gps.gp <- c(15,17)[as.factor(gp)]
 col.gps.gp <- wes_palette("Moonrise2")[as.factor(gp)]
 
 ## pca plot
@@ -103,7 +103,7 @@ pca <- autoplot(prcomp(df),
                 data = data,
                 asp = 1,
                 shape = pch.gps.gp,
-                colour = "group",
+                colour = "form",
                 variance_percentage = TRUE,
                 loadings = TRUE, 
                 loadings.colour = 'blue',
@@ -123,7 +123,7 @@ ggMarginal(pca, groupColour = TRUE)
 
 ```{r density.gp.od, out.width = "100%", dpi = 300, echo=TRUE, fig.cap="Density plot for orifice diameter by group."}
 # density plot for orifice diameter by group
-Group <- data$group
+Group <- data$form
 ggplot(data, aes(x = od, fill = Group, colour = Group)) +
   geom_density(alpha = .5) +
   scale_fill_manual(values = wes_palette("Moonrise2")) +
@@ -186,58 +186,58 @@ ggplot(data, aes(x = h, fill = Group, colour = Group)) +
 
 ```{r anova.gp.od, out.width = "100%", dpi = 300, echo=TRUE}
 # anova = orifice diameter ~ group
-gp.od <- lm.rrpp(od ~ gp, SS.type = "I", data = data, iter = 9999, print.progress = FALSE)
+gp.od <- lm.rrpp(od ~ gp, 
+                 SS.type = "I", 
+                 data = data, 
+                 iter = 9999, 
+                 print.progress = FALSE)
 anova(gp.od)
-
-# pairwise comparison of LS means = which groups differ?
-gp.od.pwml<-pairwise(gp.od, groups = data$group)
-summary(gp.od.pwml, confidence = 0.95, test.type = "dist")
 ```
 
 ### ANOVA _Base diameter_ of Chimú vessels
 
 ```{r anova.gp.bd, out.width = "100%", dpi = 300, echo=TRUE}
 # anova = base diameter ~ group
-gp.bd <- lm.rrpp(bd ~ gp, SS.type = "I", data = data, iter = 9999, print.progress = FALSE)
+gp.bd <- lm.rrpp(bd ~ gp, 
+                 SS.type = "I", 
+                 data = data, 
+                 iter = 9999, 
+                 print.progress = FALSE)
 anova(gp.bd)
-
-# pairwise comparison of LS means = which groups differ?
-gp.bd.pwml<-pairwise(gp.bd, groups = data$group)
-summary(gp.bd.pwml, confidence = 0.95, test.type = "dist")
 ```
 
 ### ANOVA _Neck diameter_ of Chimú vessels
 
 ```{r anova.gp.nd, out.width = "100%", dpi = 300, echo=TRUE}
 # anova = neck diameter ~ group
-gp.nd <- lm.rrpp(nd ~ gp, SS.type = "I", data = data, iter = 9999, print.progress = FALSE)
+gp.nd <- lm.rrpp(nd ~ gp, 
+                 SS.type = "I", 
+                 data = data, 
+                 iter = 9999, 
+                 print.progress = FALSE)
 anova(gp.nd)
-
-# pairwise comparison of LS means = which groups differ?
-gp.nd.pwml<-pairwise(gp.nd, groups = data$group)
-summary(gp.nd.pwml, confidence = 0.95, test.type = "dist")
 ```
 
 ### ANOVA _Belly diameter_ of Chimú vessels
 
 ```{r anova.gp.bl, out.width = "100%", dpi = 300, echo=TRUE}
 # anova = belly diameter ~ group
-gp.bl <- lm.rrpp(bl ~ gp, SS.type = "I", data = data, iter = 9999, print.progress = FALSE)
+gp.bl <- lm.rrpp(bl ~ gp, 
+                 SS.type = "I", 
+                 data = data, 
+                 iter = 9999, 
+                 print.progress = FALSE)
 anova(gp.bl)
-
-# pairwise comparison of LS means = which groups differ?
-gp.bl.pwml<-pairwise(gp.bl, groups = data$group)
-summary(gp.bl.pwml, confidence = 0.95, test.type = "dist")
 ```
 
 ### ANOVA _Height_ of Chimú vessels
 
 ```{r anova.gp.h, out.width = "100%", dpi = 300, echo=TRUE}
 # anova = height ~ group
-gp.h <- lm.rrpp(h ~ gp, SS.type = "I", data = data, iter = 9999, print.progress = FALSE)
+gp.h <- lm.rrpp(h ~ gp, 
+                SS.type = "I", 
+                data = data, 
+                iter = 9999, 
+                print.progress = FALSE)
 anova(gp.h)
-
-# pairwise comparison of LS means = which groups differ?
-gp.h.pwml<-pairwise(gp.h, groups = data$group)
-summary(gp.h.pwml, confidence = 0.95, test.type = "dist")
 ```

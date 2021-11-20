@@ -41,7 +41,6 @@ Y.gpa <- gpagen(coords,
 # geomorph data frame
 gdf <- geomorph.data.frame(shape = Y.gpa$coords, 
                            size = Y.gpa$Csize,
-                           group = qdata$group,
                            type = qdata$type)
 
 # render 3d gpa plot
@@ -67,17 +66,6 @@ csz <- qdata$csz
 group <-  qdata$group
 type <- qdata$type
 
-# boxplot of vessel centroid size by group
-csz.group <- ggplot(qdata, aes(x = group, y = csz, color = group)) + 
-  geom_boxplot(notch = FALSE) +
-  geom_dotplot(binaxis = 'y', stackdir = 'center', dotsize = 0.3) +
-  scale_colour_manual(values = wes_palette("Moonrise2")) +
-  theme(legend.position = "none") +
-  labs(x = 'Group', y = 'Centroid Size')
-
-# render plot
-csz.group
-
 # boxplot of vessel centroid size by type
 csz.type <- ggplot(qdata, aes(x = type, y = csz, color = type)) + 
   geom_boxplot(notch = FALSE) +
@@ -94,25 +82,11 @@ csz.type
 
 Principal components analysis [@RN1746] was used to visualise shape variation among the bottles. The shape changes described by each principal axis are commonly visualised using thin-plate spline warping of a reference 3D mesh [@RN1731;@RN479]. 
 
-```{r pca, out.width = "100%", dpi = 300, echo=TRUE, warning=FALSE}
+```{r gmpca, out.width = "100%", dpi = 300, echo=TRUE, warning=FALSE}
 # principal components analysis
 pca<-gm.prcomp(Y.gpa$coords)
 summary(pca)
 
-# set plot parameters (groups)
-pch.gps <- c(15:17)[as.factor(group)]
-col.gps <- wes_palette("Moonrise2")[as.factor(group)]
-col.hull <- c("#C27D38","#CCC591","#798E87")
-
-# plot pca by comb
-pc.plot <- plot(pca, 
-                 asp = 1,
-                 pch = pch.gps,
-                 col = col.gps)
-                    shapeHulls(pc.plot, 
-                             groups = group,
-                             group.cols = col.hull)
-                    
 # set plot parameters (types)
 pch.gps.type <- c(15,17)[as.factor(type)]
 col.gps.type <- wes_palette("Moonrise2")[as.factor(type)]
@@ -140,25 +114,13 @@ A residual randomisation permutation procedure (RRPP; n = 10,000 permutations) w
 ### Size and shape
 
 ```{r def.mod.1, out.width = "100%", dpi = 300, echo=TRUE, warning=FALSE}
-# size as a function of anthro-phyto-zoo?
-fit.size <- procD.lm(size ~ group,
-                data = gdf,
-                print.progress = FALSE,
-                iter = 9999)
-
-# shape as a function of anthro-phyto-zoo?
-fit.shape <- procD.lm(shape ~ group,
-                data = gdf,
-                print.progress = FALSE,
-                iter = 9999)
-
-# size as a function of type?
+# size as a function of vessel form?
 fit.size.type <- procD.lm(size ~ type,
                 data = gdf,
                 print.progress = FALSE,
                 iter = 9999)
 
-# shape as a function of type?
+# shape as a function of vessel form?
 fit.shape.type <- procD.lm(shape ~ type,
                 data = gdf,
                 print.progress = FALSE,
@@ -172,12 +134,6 @@ _Hypothesis: ..._
 ### Procrustes ANOVA
 
 ```{r h1, out.width = "100%", dpi = 300, echo=TRUE, warning=FALSE}
-# ANOVA: do group sizes differ?
-anova(fit.size)
-
-# ANOVA: do group shapes differ?
-anova(fit.shape)
-
 # ANOVA: do type sizes differ?
 anova(fit.size.type)
 
@@ -204,35 +160,6 @@ plot(mean$jar)
 plotRefToTarget(mean$bottle, 
                 mean$jar, 
                 method = c("points"),
-                mag = 1)
-
-# subset landmark coordinates to produce mean shapes (group)
-new.coords<-coords.subset(A = Y.gpa$coords,
-                          group = qdata$group)
-names(new.coords)
-
-# group shape means
-mean <- lapply(new.coords, mshape)
-
-# plot mean shapes
-plot(mean$anthropomorph)
-plot(mean$phytomorph)
-plot(mean$zoomorph)
-
-# comparison plots
-plotRefToTarget(mean$anthropomorph, 
-                mean$phytomorph, 
-                method = c("points"),
-                mag = 1)
-
-plotRefToTarget(mean$anthropomorph, 
-                mean$phytomorph, 
-                method = "points",
-                mag = 1)
-
-plotRefToTarget(mean$phytomorph, 
-                mean$zoomorph, 
-                method = "points",
                 mag = 1)
 
 #knitr::include_graphics('images/comp.composite.jpg')
