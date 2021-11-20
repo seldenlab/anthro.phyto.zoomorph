@@ -30,7 +30,5 @@ generalised-procrustes-analysis
 boxplot
 principal-components-analysis
 define-models
-size-and-shape
-test-hypothesis
-procrustes-anova
+vessel-size-and-shape
 mean-shapes
